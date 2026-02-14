@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package netdemo;
+
+service ChatService {
+  rpc UnaryEcho(ChatMessage) returns (ChatMessage);
+  rpc ServerStream(ChatMessage) returns (stream ChatMessage);
+  rpc ClientStream(stream ChatMessage) returns (ChatMessage);
+  rpc BidiStream(stream ChatMessage) returns (stream ChatMessage);
+}
+
+message ChatMessage {
+  string text = 1;
+}

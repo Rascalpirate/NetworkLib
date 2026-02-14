@@ -1,0 +1,5 @@
+add_executable(windows_iocp_server server.cpp)
+add_executable(windows_iocp_client client.cpp)
+
+target_link_libraries(windows_iocp_server PRIVATE ws2_32)
+target_link_libraries(windows_iocp_client PRIVATE ws2_32)

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package netdemo.asio_grpc;
+
+service EchoService {
+  rpc UnaryEcho(EchoRequest) returns (EchoReply);
+}
+
+message EchoRequest {
+  string text = 1;
+}
+
+message EchoReply {
+  string text = 1;
+}

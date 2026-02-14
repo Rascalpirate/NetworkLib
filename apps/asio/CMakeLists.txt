@@ -1,0 +1,15 @@
+set(ASIO_COMMON_LIBS Boost::system pthread)
+
+add_executable(asio_st_server single_thread_server.cpp)
+add_executable(asio_st_client single_thread_client.cpp)
+add_executable(asio_mt_server multi_thread_server.cpp)
+add_executable(asio_mt_client multi_thread_client.cpp)
+add_executable(asio_pool_server thread_pool_server.cpp)
+add_executable(asio_pool_client thread_pool_client.cpp)
+
+target_link_libraries(asio_st_server PRIVATE ${ASIO_COMMON_LIBS})
+target_link_libraries(asio_st_client PRIVATE ${ASIO_COMMON_LIBS})
+target_link_libraries(asio_mt_server PRIVATE ${ASIO_COMMON_LIBS})
+target_link_libraries(asio_mt_client PRIVATE ${ASIO_COMMON_LIBS})
+target_link_libraries(asio_pool_server PRIVATE ${ASIO_COMMON_LIBS})
+target_link_libraries(asio_pool_client PRIVATE ${ASIO_COMMON_LIBS})

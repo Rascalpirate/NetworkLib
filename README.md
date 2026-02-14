@@ -1,28 +1,95 @@
-<!--
- * @Author: error: git config user.name & please set dead value or install git
- * @Date: 2026-02-14 12:33:43
- * @LastEditors: error: git config user.name & please set dead value or install git
- * @LastEditTime: 2026-02-14 13:34:50
- * @FilePath: /MyCoder/CodeX/network.md
- * @Description:
--->
+# NetworkLib Demo Apps
 
-使用cmake 组织项目，开发 demo apps, 其中包含对网络编程使用的 demo. apps 包括：
+使用 CMake 组织的网络编程 demo 集合，覆盖 Linux、Windows、跨平台 Boost.Asio、gRPC 四种模式，以及 C++20 coroutine。
 
-1. ubuntu 平台上，
-    1.1. 使用 raw tcp socket 开发的、基于同步阻塞IO的单线程 server 和 client app;
-    1.2. 使用 raw tcp socket 开发的、基于同步阻塞IO的多线程 server 和 client app;
-    1.2. 使用 raw tcp socket 开发的、基于同步阻塞IO的线程池 server 和 client app;
-    1.3. 使用 epoll 开发的非阻塞的单线程 server 和 client app;
+## 构建
 
-2. windows 平台上，
-    2.1 基于 iocp 的 server 和 client app;
+```bash
+cmake -S . -B build
+cmake --build build -j
+```
 
-3. 跨 windows 和 ubuntu 平台的，基于 boost asio 的：
-    3.1. 单线程 server 和 client app;
-    3.2. 多线程 server 和 client app;
-    3.2. 线程池 server 和 client app;
+可选开关：
 
-4. 基于 grpc 四种模式的 server 和 client app;
+- `-DNETLIB_BUILD_UBUNTU_DEMOS=ON/OFF`
+- `-DNETLIB_BUILD_WINDOWS_IOCP_DEMOS=ON/OFF`
+- `-DNETLIB_BUILD_BOOST_ASIO_DEMOS=ON/OFF`
+- `-DNETLIB_BUILD_GRPC_DEMOS=ON/OFF`（默认 OFF，需要本机安装 gRPC+Protobuf）
+- `-DNETLIB_BUILD_COROUTINE_DEMOS=ON/OFF`
+- `-DNETLIB_BUILD_ASIO_GRPC_DEMOS=ON/OFF`（默认 OFF，需要 Boost + gRPC + Protobuf，且会拉取 `Tradias/asio-grpc`）
 
-5. 基于 c++ 20 的 coroutine 的 server 和 client app;
+## Demo 列表
+
+### 1. Ubuntu 平台
+
+- Raw TCP + 同步阻塞 IO + 单线程
+  - `ubuntu_raw_blocking_st_server`
+  - `ubuntu_raw_blocking_st_client`
+- Raw TCP + 同步阻塞 IO + 多线程
+  - `ubuntu_raw_blocking_mt_server`
+  - `ubuntu_raw_blocking_mt_client`
+- Raw TCP + 同步阻塞 IO + 线程池
+  - `ubuntu_raw_blocking_pool_server`
+  - `ubuntu_raw_blocking_pool_client`
+- Epoll + 非阻塞 + 单线程
+  - `ubuntu_epoll_nonblocking_server`
+  - `ubuntu_epoll_nonblocking_client`
+
+### 2. Windows 平台
+
+- IOCP（示例骨架）
+  - `windows_iocp_server`
+  - `windows_iocp_client`
+
+### 3. 跨平台 Boost.Asio
+
+- 单线程
+  - `asio_st_server`
+  - `asio_st_client`
+- 多线程
+  - `asio_mt_server`
+  - `asio_mt_client`
+- 线程池
+  - `asio_pool_server`
+  - `asio_pool_client`
+
+### 4. gRPC 四种模式
+
+- 统一在一对 server/client 中演示：
+  - Unary
+  - Server Streaming
+  - Client Streaming
+  - Bidirectional Streaming
+- 可执行文件：
+  - `grpc_modes_server`
+  - `grpc_modes_client`
+
+### 5. C++20 Coroutine
+
+- `coro_server`
+- `coro_client`
+
+## 运行示例
+
+先启动 server，再运行对应 client。例如：
+
+```bash
+./build/apps/ubuntu/ubuntu_raw_blocking_st_server
+./build/apps/ubuntu/ubuntu_raw_blocking_st_client
+```
+
+
+### 6. asio-grpc（Boost.Asio + gRPC）
+
+- `asio_grpc_server`
+- `asio_grpc_client`
+
+> 说明：该 demo 使用 `https://github.com/Tradias/asio-grpc`，用于演示基于 `agrpc::GrpcContext` 的 unary RPC 异步写法。
+
+
+启用 asio-grpc demo 构建示例：
+
+```bash
+cmake -S . -B build -DNETLIB_BUILD_ASIO_GRPC_DEMOS=ON
+cmake --build build -j
+```
